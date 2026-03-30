@@ -15,10 +15,11 @@ export function useFilters(restaurants: Restaurant[]): UseFiltersReturn {
   const [selectedCuisine, setSelectedCuisine] = useState("All");
 
   const cuisineTypes = useMemo(() => {
+    const unwanted = ["Turkish", "Arab", "Pakistani", "Bangladeshi", "International", "Syrian", "All", "Open Now"];
     const types = Array.from(
       new Set(restaurants.map((r) => r.cuisine).filter(Boolean))
-    ).sort();
-    return ["All", ...types];
+    ).filter(c => !unwanted.includes(c)).sort();
+    return types;
   }, [restaurants]);
 
   const filteredRestaurants = useMemo(() => {
@@ -34,12 +35,12 @@ export function useFilters(restaurants: Restaurant[]): UseFiltersReturn {
       );
     }
 
-    if (selectedCuisine !== "All") {
+    if (selectedCuisine && selectedCuisine !== "All" && cuisineTypes.includes(selectedCuisine)) {
       result = result.filter((r) => r.cuisine === selectedCuisine);
     }
 
     return result;
-  }, [restaurants, searchQuery, selectedCuisine]);
+  }, [restaurants, searchQuery, selectedCuisine, cuisineTypes]);
 
   return {
     searchQuery,

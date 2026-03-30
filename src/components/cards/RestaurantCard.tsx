@@ -1,7 +1,7 @@
 import { Restaurant } from "../../types/restaurant";
 import { getCuisineColor } from "../../utils/cuisineColors";
 
-import { LuStar } from "react-icons/lu";
+import { LuStar, LuHeart } from "react-icons/lu";
 
 interface HalalBadgeProps {
   status: string;
@@ -29,6 +29,8 @@ interface RestaurantCardProps {
   isSelected: boolean;
   onClick: () => void;
   index: number;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 }
 
 const FOOD_IMAGES = [
@@ -49,7 +51,14 @@ export function getRestaurantImage(restaurant: Restaurant, index: number): strin
   return FOOD_IMAGES[index % FOOD_IMAGES.length];
 }
 
-export default function RestaurantCard({ restaurant, isSelected, onClick, index }: RestaurantCardProps) {
+export default function RestaurantCard({ 
+  restaurant, 
+  isSelected, 
+  onClick, 
+  index, 
+  isFavorite, 
+  onToggleFavorite 
+}: RestaurantCardProps) {
   const imageUrl = getRestaurantImage(restaurant, index);
 
   return (
@@ -70,23 +79,37 @@ export default function RestaurantCard({ restaurant, isSelected, onClick, index 
         <div className="absolute top-5 right-5">
           <HalalBadge status={restaurant.halal_status} />
         </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite();
+          }}
+          className={`absolute bottom-4 right-4 h-11 w-11 rounded-full flex items-center justify-center text-xl shadow-lg transition-all active:scale-90 z-20 ${
+            isFavorite 
+              ? "bg-[#4ade80] text-[#113320] shadow-green-500/20" 
+              : "bg-white/80 backdrop-blur-sm text-[#475569] hover:bg-white border border-white/50"
+          }`}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        >
+          <LuHeart className={isFavorite ? "fill-current" : ""} />
+        </button>
       </div>
 
       {/* Body */}
-      <div className="!px-[36px] !py-[36px]">
-        <div className="flex justify-between items-center mb-3">
+      <div className="px-8 py-8">
+        <div className="flex justify-between items-center mb-2">
           <h3 className="text-[19px] font-heading font-black text-[#113320] tracking-tight">
             {restaurant.name}
           </h3>
           {restaurant.rating && (
-            <div className="flex items-center gap-1.5 bg-[#e2f3e9] px-2.5 py-1 rounded-lg text-[#113320] font-black text-[12px]">
+            <div className="flex items-center gap-1.5 bg-[#e2f3e9] px-3 py-1.5 rounded-lg text-[#113320] font-black text-[12px]">
               <LuStar className="text-[10px] fill-[#113320]" />
               <span>{restaurant.rating.toFixed(1)}</span>
             </div>
           )}
         </div>
         
-        <p className="text-[14px] font-bold text-[#94a3b8] mb-8">
+        <p className="text-[14px] font-bold text-[#94a3b8] mb-6">
           {restaurant.cuisine} Specialty • 1.2km away
         </p>
 

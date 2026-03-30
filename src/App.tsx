@@ -114,6 +114,8 @@ export default function Home() {
                 onCuisineChange={setSelectedCuisine}
                 loading={loading}
                 onViewDetail={handleViewDetail}
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
               />
             </div>
           )}
@@ -140,15 +142,15 @@ export default function Home() {
                     onCuisineChange={() => {}}
                     loading={loading}
                     onViewDetail={handleViewDetail}
+                    favorites={favorites}
+                    onToggleFavorite={toggleFavorite}
                   />
                   {favorites.length === 0 && (
-                    <div className="mt-[-100px]">
-                      <EmptyState 
-                        title="No Favorites Yet" 
-                        description="Your saved restaurants and mosques will appear here. Start exploring!"
-                        icon={<LuHeart />}
-                      />
-                    </div>
+                    <EmptyState 
+                      title="No Favorites Yet" 
+                      description="Your saved restaurants and mosques will appear here. Start exploring!"
+                      icon={<LuHeart />}
+                    />
                   )}
                 </div>
               )}

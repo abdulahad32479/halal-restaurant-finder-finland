@@ -16,11 +16,11 @@ export default function LeftNav({ onAddClick, activeSection, onSectionChange }: 
 
   return (
     <aside className="left-nav-wrapper h-full bg-[#f0f7f4] border-r border-[#e2e8f0]">
-      <div className="left-nav h-full flex flex-col p-8">
+      <div className="left-nav h-full flex flex-col px-6 py-8">
         {/* Brand Section */}
-        <div className="mb-14 pt-2">
+        <div className="mb-12">
           <h2 className="text-[22px] font-heading font-black text-[#113320] leading-tight tracking-tight">Nordic Concierge</h2>
-          <p className="text-[12px] font-bold text-[#94a3b8] tracking-tight mt-2 uppercase tracking-[0.05em] opacity-70">Halal Finder Finland</p>
+          <p className="text-[12px] font-bold text-[#94a3b8] mt-2 uppercase tracking-widest opacity-70">Halal Finder Finland</p>
         </div>
 
         {/* Navigation Items */}
@@ -47,11 +47,11 @@ export default function LeftNav({ onAddClick, activeSection, onSectionChange }: 
         </nav>
 
         {/* Bottom Action */}
-        <div className="mt-auto pt-8">
+        <div className="mt-auto pt-8 flex justify-center">
           <button 
             onClick={onAddClick}
             style={{ backgroundColor: '#113320' }}
-            className="w-full h-14 text-white rounded-2xl flex items-center justify-center gap-3 text-[14px] font-bold shadow-xl shadow-green-900/10 transition-all hover:brightness-110 active:scale-95 group"
+            className="w-[200px] h-14 text-white rounded-2xl flex items-center justify-center gap-3 text-[14px] font-bold shadow-xl shadow-green-900/10 transition-all hover:brightness-110 active:scale-95 group"
           >
             <LuPlus className="text-xl group-hover:rotate-90 transition-transform duration-300" />
             Add Restaurant

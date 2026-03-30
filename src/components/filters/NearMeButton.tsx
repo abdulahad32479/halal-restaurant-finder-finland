@@ -27,6 +27,7 @@ export default function NearMeButton({ onLocate, loading }: NearMeButtonProps) {
       onClick={handleClick}
       disabled={loading}
       aria-label="Find restaurants near me"
+      style={{ fontWeight: 900 }}
     >
       <span className="near-me-btn__icon">✈</span>
       <span>Near Me</span>

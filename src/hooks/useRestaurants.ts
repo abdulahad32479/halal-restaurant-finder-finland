@@ -37,15 +37,20 @@ export function useRestaurants(): UseRestaurantsReturn {
         const csv = await response.text();
         const parsed = sheetParser(csv);
 
-        if (parsed.length === 0) {
-          throw new Error("No valid restaurant data found in sheet");
-        }
+        // Combine Sheet data with our must-use constant restaurants
+        // Use a Map to avoid duplicates by ID
+        const combined = [...FALLBACK_RESTAURANTS];
+        parsed.forEach(p => {
+          if (!combined.find(c => c.id === p.id)) {
+            combined.push(p);
+          }
+        });
 
-        setRestaurants(parsed);
+        setRestaurants(combined);
       } catch (err) {
         console.warn("Failed to fetch Google Sheet, using fallback data:", err);
         setRestaurants(FALLBACK_RESTAURANTS);
-        setError(null); // Don't show error to user — silently fall back
+        setError(null); 
       } finally {
         setLoading(false);
       }

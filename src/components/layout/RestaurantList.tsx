@@ -12,6 +12,8 @@ interface RestaurantListProps {
   onCuisineChange: (c: string) => void;
   loading: boolean;
   onViewDetail: (r: Restaurant) => void;
+  favorites: string[];
+  onToggleFavorite: (id: string) => void;
 }
 
 export default function RestaurantList({
@@ -23,12 +25,14 @@ export default function RestaurantList({
   selectedCuisine,
   onCuisineChange,
   loading,
-  onViewDetail
+  onViewDetail,
+  favorites,
+  onToggleFavorite
 }: RestaurantListProps) {
   return (
-    <div className="restaurant-list p-6 bg-[#f0f7f4] min-h-full">
+    <div className="restaurant-list px-8 py-6 bg-[#f0f7f4] min-h-full">
       {/* Section header */}
-      <div className="mb-10">
+      <div className="mb-8">
         <h2 className="text-[28px] font-heading font-black text-[#113320]">
           Top Halal Restaurants
         </h2>
@@ -36,17 +40,19 @@ export default function RestaurantList({
 
 
       {/* Cuisine filters */}
-      <CuisineFilter
-        cuisines={cuisines}
-        selected={selectedCuisine}
-        onSelect={onCuisineChange}
-      />
+      <div className="mb-8">
+        <CuisineFilter
+          cuisines={cuisines}
+          selected={selectedCuisine}
+          onSelect={onCuisineChange}
+        />
+      </div>
 
       {/* Loading state */}
       {loading && (
         <div className="flex flex-col gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="skeleton skeleton-card h-[380px] rounded-[32px]"></div>
+            <div key={i} className="skeleton skeleton-card h-96 rounded-4xl"></div>
           ))}
         </div>
       )}
@@ -60,7 +66,7 @@ export default function RestaurantList({
         </div>
       )}
 
-      <div className="restaurant-list__cards space-y-10">
+      <div className="restaurant-list__cards space-y-8">
         {restaurants.map((restaurant, index) => {
           const originalIndex = allRestaurants.indexOf(restaurant);
           return (
@@ -70,6 +76,8 @@ export default function RestaurantList({
               isSelected={selectedRestaurant?.id === restaurant.id}
               onClick={() => onSelect(restaurant)}
               index={originalIndex >= 0 ? originalIndex : index}
+              isFavorite={favorites.includes(restaurant.id)}
+              onToggleFavorite={() => onToggleFavorite(restaurant.id)}
             />
           );
         })}

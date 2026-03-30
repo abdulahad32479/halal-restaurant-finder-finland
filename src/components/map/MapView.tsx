@@ -31,9 +31,9 @@ fixLeafletIcons();
 function MapActions() {
   const map = useMap();
   return (
-    <div className="absolute bottom-12 right-12 z-[1000] flex flex-col gap-6 items-center">
+    <div className="absolute bottom-12 right-12 z-1000 flex flex-col gap-6 items-center">
       {/* Zoom Controls */}
-      <div className="flex flex-col bg-white/80 backdrop-blur-xl rounded-[24px] shadow-2xl shadow-black/10 border border-white/50 overflow-hidden group">
+      <div className="flex flex-col bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/10 border border-white/50 overflow-hidden group">
         <button 
           className="h-16 w-16 flex items-center justify-center text-[#113320] text-3xl active:bg-gray-100 transition-all border-b border-gray-100/50 hover:bg-white"
           onClick={() => map.zoomIn()}
@@ -52,7 +52,7 @@ function MapActions() {
 
       {/* Locate Button */}
       <button 
-        className="h-16 w-16 bg-[#113320] rounded-[24px] shadow-2xl shadow-[#113320]/30 flex items-center justify-center text-white text-3xl hover:bg-[#1b452d] hover:-translate-y-1 active:scale-95 transition-all duration-300"
+        className="h-16 w-16 bg-[#113320] rounded-3xl shadow-2xl shadow-[#113320]/30 flex items-center justify-center text-white text-3xl hover:bg-[#1b452d] hover:-translate-y-1 active:scale-95 transition-all duration-300"
         onClick={() => {
           if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
@@ -154,10 +154,10 @@ export default function MapView({
 
       {/* Floating Selection Card - Pixel Perfect Match */}
       {selectedRestaurant && (
-        <div className="absolute top-12 left-12 z-[1000] w-[340px] bg-white rounded-[20px] shadow-2xl shadow-black/10 border border-white overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="px-[30px] py-[30px]">
+        <div className="absolute top-12 left-12 z-1000 w-80 bg-white rounded-3xl shadow-2xl shadow-black/10 border border-white overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="px-8 py-8">
             <div className="flex items-start gap-4 mb-8">
-              <div className="h-14 w-14 bg-[#113320] rounded-[14px] flex items-center justify-center text-white text-2xl flex-shrink-0">
+              <div className="h-14 w-14 bg-[#113320] rounded-2xl flex items-center justify-center text-white text-2xl shrink-0">
                 <LuUtensils />
               </div>
               <div className="flex flex-col pt-1">
