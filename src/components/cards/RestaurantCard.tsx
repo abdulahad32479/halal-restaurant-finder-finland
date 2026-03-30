@@ -8,29 +8,18 @@ interface HalalBadgeProps {
   small?: boolean;
 }
 
-export function HalalBadge({ status, small = false }: HalalBadgeProps) {
+export function HalalBadge({ status }: HalalBadgeProps) {
   const isVerified = status === "Fully Halal" || status === "Halal Certified";
-  const label = isVerified ? "VERIFIED HALAL" : "HALAL OPTIONS";
+  if (!isVerified) return null;
 
   return (
-    <span className={`halal-badge font-heading ${isVerified ? "halal-badge--verified" : "halal-badge--options"} ${small ? "halal-badge--small" : ""}`}>
-      {isVerified && <span className="mr-1">●</span>} {label}
-    </span>
-  );
-}
-
-interface CuisinePillProps {
-  cuisine: string;
-}
-
-export function CuisinePill({ cuisine }: CuisinePillProps) {
-  const color = getCuisineColor(cuisine);
-  return (
-    <span
-      className="cuisine-pill"
-      style={{ borderColor: color, color: color, backgroundColor: `${color}15` }}
-    >
-      {cuisine}
+    <span className="flex items-center gap-1.5 px-3 py-1.5 bg-[#113320] text-white rounded-full text-[9px] font-black tracking-widest shadow-lg">
+      <div className="flex items-center justify-center h-3.5 w-3.5 bg-[#4ade80] rounded-full text-[#113320]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" className="w-2 h-2">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      VERIFIED HALAL
     </span>
   );
 }
@@ -43,16 +32,16 @@ interface RestaurantCardProps {
 }
 
 const FOOD_IMAGES = [
-  "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80", // kebab/grilled meat
-  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80", // mediterranean
-  "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80", // salad/veggie
-  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80", // pizza/flatbread
-  "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&q=80", // rice dish
-  "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80", // fish
-  "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80", // biryani
-  "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=400&q=80", // wraps
-  "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&q=80", // burger/sandwich
-  "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&q=80", // soup/stew
+  "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80", 
+  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80", 
+  "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80", 
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80", 
+  "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&q=80", 
+  "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80", 
+  "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80", 
+  "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=400&q=80", 
+  "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&q=80", 
+  "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&q=80", 
 ];
 
 export function getRestaurantImage(restaurant: Restaurant, index: number): string {
@@ -65,48 +54,48 @@ export default function RestaurantCard({ restaurant, isSelected, onClick, index 
 
   return (
     <div
-      className={`restaurant-card group ${isSelected ? "restaurant-card--selected" : ""}`}
+      className={`group relative transition-all duration-300 bg-white rounded-[20px] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl ${
+        isSelected ? "ring-2 ring-[#113320]" : "border border-gray-100"
+      }`}
       onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onClick()}
     >
-      {/* Food image */}
-      <div className="restaurant-card__image-wrap">
+      {/* Image Wrap */}
+      <div className="relative h-48 overflow-hidden">
         <img
           src={imageUrl}
           alt={restaurant.name}
-          className="restaurant-card__image"
+          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
-        <HalalBadge status={restaurant.halal_status} small />
+        <div className="absolute top-5 right-5">
+          <HalalBadge status={restaurant.halal_status} />
+        </div>
       </div>
 
-      {/* Info */}
-      <div className="restaurant-card__body p-5">
-        <div className="restaurant-card__header flex justify-between items-start mb-2">
-          <h3 className="restaurant-card__name text-[18px] font-heading font-black text-[#113320] leading-tight flex-1 uppercase tracking-tight">
+      {/* Body */}
+      <div className="!px-[36px] !py-[36px]">
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-[19px] font-heading font-black text-[#113320] tracking-tight">
             {restaurant.name}
           </h3>
           {restaurant.rating && (
-            <div className="restaurant-card__rating font-heading">
-              <LuStar className="text-[#1b452d] text-xs fill-[#1b452d]" />
+            <div className="flex items-center gap-1.5 bg-[#e2f3e9] px-2.5 py-1 rounded-lg text-[#113320] font-black text-[12px]">
+              <LuStar className="text-[10px] fill-[#113320]" />
               <span>{restaurant.rating.toFixed(1)}</span>
             </div>
           )}
         </div>
         
-        <p className="text-[13px] font-medium text-[#64748b] mb-4">
-          Authentic {restaurant.cuisine} Cuisine • 1.2km away
+        <p className="text-[14px] font-bold text-[#94a3b8] mb-8">
+          {restaurant.cuisine} Specialty • 1.2km away
         </p>
 
-        <div className="flex gap-2">
-          <span className="px-3 py-1.5 bg-[#f1f5f9] text-[#475569] text-[10px] font-black uppercase tracking-[0.15em] rounded-lg font-heading">
-            {restaurant.cuisine}
-          </span>
-          <span className="px-3 py-1.5 bg-[#f1f5f9] text-[#475569] text-[10px] font-black uppercase tracking-[0.15em] rounded-lg font-heading">
-            DINING
-          </span>
+        <div className="flex flex-wrap gap-2.5">
+          {[restaurant.cuisine.toUpperCase(), "DINING"].map(tag => (
+            <span key={tag} className="px-4 py-2 bg-[#f0f3f1] text-[#94a3b8] text-[9.5px] font-black tracking-widest rounded-xl transition-colors hover:bg-[#113320] hover:text-white inline-block">
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     </div>

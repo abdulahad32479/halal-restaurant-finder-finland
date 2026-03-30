@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRestaurants } from "./hooks/useRestaurants";
 import { useFilters } from "./hooks/useFilters";
 import { Restaurant } from "./types/restaurant";
@@ -30,6 +30,22 @@ export default function Home() {
   const [isMobileMapView, setIsMobileMapView] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
+  // Favorites logic
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const saved = localStorage.getItem("halal-finder-favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("halal-finder-favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (id: string) => {
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]
+    );
+  };
+
   function handleRestaurantSelect(restaurant: Restaurant) {
     setSelectedRestaurant(restaurant);
     // When selecting on map/list, we show the floating card or highlight
@@ -55,6 +71,14 @@ export default function Home() {
     return restaurants.indexOf(r);
   }
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    if (tab === "Discover") setActiveSection("restaurants");
+    if (tab === "Favorites") setActiveSection("favorites");
+    if (tab === "Recent") setActiveSection("restaurants"); // Simplified
+    setIsDetailView(false);
+  };
+
   return (
     <div className="app-layout">
       {/* Header */}
@@ -62,7 +86,7 @@ export default function Home() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
         onLocate={handleLocate}
       />
 
@@ -105,11 +129,28 @@ export default function Home() {
                 />
               )}
               {activeSection === "favorites" && (
-                <EmptyState 
-                  title="Favorites" 
-                  description="Your saved restaurants and mosques will appear here. Start exploring!"
-                  icon={<LuHeart />}
-                />
+                <div className="h-full overflow-y-auto">
+                   <RestaurantList 
+                    restaurants={restaurants.filter(r => favorites.includes(r.id))} 
+                    allRestaurants={restaurants}
+                    selectedRestaurant={selectedRestaurant}
+                    onSelect={handleRestaurantSelect}
+                    cuisines={cuisineTypes}
+                    selectedCuisine="All"
+                    onCuisineChange={() => {}}
+                    loading={loading}
+                    onViewDetail={handleViewDetail}
+                  />
+                  {favorites.length === 0 && (
+                    <div className="mt-[-100px]">
+                      <EmptyState 
+                        title="No Favorites Yet" 
+                        description="Your saved restaurants and mosques will appear here. Start exploring!"
+                        icon={<LuHeart />}
+                      />
+                    </div>
+                  )}
+                </div>
               )}
               {activeSection === "settings" && (
                 <EmptyState 
@@ -138,6 +179,8 @@ export default function Home() {
                   restaurant={selectedRestaurant} 
                   onClose={() => setIsDetailView(false)}
                   index={getOriginalIndex(selectedRestaurant)}
+                  isFavorite={favorites.includes(selectedRestaurant.id)}
+                  onToggleFavorite={() => toggleFavorite(selectedRestaurant.id)}
                 />
               </div>
             )}

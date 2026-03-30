@@ -36,54 +36,56 @@ export default function Header({
   }
 
   return (
-    <header className="header justify-between">
-      <div className="header__logo flex flex-col -gap-1">
-        <h1 className="text-2xl font-heading font-black text-[#113320] leading-none tracking-tighter uppercase italic">
-          Verdant<span className="text-[#2a6f44] not-italic">.</span>
-        </h1>
-        <span className="text-[10px] font-black tracking-[0.3em] text-[#94a3b8] uppercase ml-0.5">HALAL FINDER</span>
+    <header className="header px-8 flex items-center justify-between border-b border-gray-100 bg-white sticky top-0 z-[1000] h-[72px]">
+      {/* Brand Logo */}
+      <div className="flex items-center gap-1.5 cursor-pointer select-none min-w-[200px]">
+        <span className="text-2xl font-heading font-black tracking-tight text-[#2a6f44]">Verdant</span>
+        <span className="text-2xl font-heading font-black tracking-tight text-black">Halal</span>
       </div>
-      
-      {/* Main Tabs */}
-      <nav className="header__nav px-8" aria-label="Main navigation">
+
+      {/* Navigation Tabs */}
+      <nav className="flex-1 flex items-center justify-start gap-10 h-full ml-4">
         {TABS.map((tab) => (
           <button
             key={tab}
-            className={`header__nav-tab font-heading font-black text-[13px] tracking-widest uppercase ${activeTab === tab ? "header__nav-tab--active" : ""}`}
             onClick={() => onTabChange(tab)}
+            className={`h-full relative px-1 font-heading text-[15px] font-bold tracking-tight transition-colors flex items-center ${
+              activeTab === tab ? "text-[#113320]" : "text-[#94a3b8] hover:text-[#475569]"
+            }`}
           >
             {tab}
+            {activeTab === tab && (
+              <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-[#113320] rounded-t-full" />
+            )}
           </button>
         ))}
       </nav>
 
-      {/* Right Actions */}
-      <div className="header__actions gap-6">
-        <div className="search-bar h-12 bg-[#f8faf9] border-gray-100">
-          <LuSearch className="search-bar__icon text-lg" />
+      {/* Search & Actions */}
+      <div className="flex items-center gap-4">
+        <div className="search-bar group h-10 w-[280px] bg-[#f0f3f1] border-none rounded-full px-5 flex items-center">
           <input
             type="text"
-            className="search-bar__input font-medium"
             placeholder="Search Helsinki..."
+            className="flex-1 bg-transparent border-none outline-none text-[13px] font-medium text-[#113320] placeholder:text-[#94a3b8]"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            aria-label="Search restaurants"
           />
+          <LuSearch className="text-[#94a3b8] text-lg group-focus-within:text-[#113320] transition-colors" />
         </div>
 
         <button 
-          className="near-me-btn h-12 px-6 rounded-2xl bg-[#113320] hover:bg-[#1b452d] font-heading font-black tracking-wider uppercase text-[11px] shadow-xl shadow-[#113320]/20 active:scale-95 transition-all"
           onClick={handleLocate}
           disabled={locating}
-          aria-label="Find restaurants near me"
+          className="h-10 px-5 bg-[#113320] hover:bg-[#1b452d] text-white rounded-full flex items-center gap-2 text-[13px] font-bold shadow-lg shadow-green-900/10 transition-all active:scale-95 disabled:opacity-70"
         >
-          <LuNavigation className={`near-me-btn__icon text-base ${locating ? 'animate-pulse' : ''}`} />
-          <span>Near Me</span>
+          <LuNavigation className={`text-[14px] ${locating ? 'animate-pulse' : ''}`} />
+          Near Me
         </button>
 
-        <button className="h-12 w-12 bg-[#f1f5f9] text-[#113320] flex items-center justify-center rounded-2xl hover:bg-[#e2e8f0] transition-all active:scale-90" aria-label="User profile">
-          <LuUser className="text-xl" />
-        </button>
+        <div className="h-10 w-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-[#113320] text-xl shadow-sm cursor-pointer hover:shadow-md transition-all">
+          <LuUser />
+        </div>
       </div>
     </header>
   );

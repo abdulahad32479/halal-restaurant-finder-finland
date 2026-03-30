@@ -27,19 +27,24 @@ export function fixLeafletIcons() {
 
 export function createCustomIcon(cuisine: string, isSelected: boolean) {
   const cuisineColor = getCuisineColor(cuisine);
-  const size = isSelected ? 32 : 20;
+  const size = isSelected ? 48 : 28;
   const shadow = isSelected 
-    ? "filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25))" 
-    : "filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15))";
+    ? "filter: drop-shadow(0 12px 24px rgba(0,0,0,0.3))" 
+    : "filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15))";
 
   const svg = `
     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" fill="none" xmlns="http://www.w3.org/2000/svg" style="${shadow}">
-      ${isSelected ? `<circle cx="${size/2}" cy="${size/2}" r="${size/2}" fill="${cuisineColor}" fill-opacity="0.15">
-        <animate attributeName="r" from="${size/2 - 4}" to="${size/2}" dur="1.5s" begin="0s" repeatCount="indefinite" />
-        <animate attributeName="fill-opacity" from="0.4" to="0" dur="1.5s" begin="0s" repeatCount="indefinite" />
-      </circle>` : ""}
-      <circle cx="${size/2}" cy="${size/2}" r="${size/2 - 4}" fill="white" stroke="${isSelected ? cuisineColor : 'rgba(0,0,0,0.05)'}" stroke-width="${isSelected ? 3 : 1.5}"/>
-      <circle cx="${size/2}" cy="${size/2}" r="${size/4}" fill="${cuisineColor}"/>
+      ${isSelected ? `
+        <circle cx="${size/2}" cy="${size/2}" r="${size/2 - 2}" stroke="${cuisineColor}" stroke-width="2" stroke-dasharray="4 4" opacity="0.6">
+          <animateTransform attributeName="transform" type="rotate" from="0 ${size/2} ${size/2}" to="360 ${size/2} ${size/2}" dur="8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="${size/2}" cy="${size/2}" r="${size/2 - 6}" fill="${cuisineColor}" fill-opacity="0.1">
+          <animate attributeName="r" from="${size/2 - 10}" to="${size/2 - 6}" dur="1.5s" repeatCount="indefinite" />
+          <animate attributeName="fill-opacity" from="0.3" to="0" dur="1.5s" repeatCount="indefinite" />
+        </circle>
+      ` : ""}
+      <circle cx="${size/2}" cy="${size/2}" r="${isSelected ? 14 : 10}" fill="white" stroke="${isSelected ? cuisineColor : 'white'}" stroke-width="${isSelected ? 3 : 1.5}"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${isSelected ? 7 : 5}" fill="${cuisineColor}"/>
     </svg>
   `;
   return L.divIcon({

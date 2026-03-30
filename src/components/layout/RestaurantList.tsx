@@ -26,12 +26,11 @@ export default function RestaurantList({
   onViewDetail
 }: RestaurantListProps) {
   return (
-    <div className="restaurant-list p-6 bg-[#f7fbf9]">
+    <div className="restaurant-list p-6 bg-[#f0f7f4] min-h-full">
       {/* Section header */}
-      <div className="mb-6">
-        <h2 className="text-4xl font-heading font-black text-[#113320] leading-[0.9] uppercase tracking-tighter items-center gap-4">
-          <span className="block italic text-[0.45em] tracking-[0.3em] font-black text-[#2a6f44] mb-2">EXPLORE FINLAND</span>
-          Top Halal<br/>Restaurants
+      <div className="mb-10">
+        <h2 className="text-[28px] font-heading font-black text-[#113320]">
+          Top Halal Restaurants
         </h2>
       </div>
 
@@ -45,21 +44,23 @@ export default function RestaurantList({
 
       {/* Loading state */}
       {loading && (
-        <div className="restaurant-list__loading">
-          <div className="spinner" />
-          <span>Loading restaurants...</span>
+        <div className="flex flex-col gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="skeleton skeleton-card h-[380px] rounded-[32px]"></div>
+          ))}
         </div>
       )}
 
       {/* Restaurant cards */}
       {!loading && restaurants.length === 0 && (
-        <div className="restaurant-list__empty">
-          <span>🔍</span>
-          <p>No restaurants found. Try a different search.</p>
+        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[48px] border border-gray-100 shadow-xl shadow-green-900/5">
+          <div className="h-20 w-20 bg-gray-50 rounded-full flex items-center justify-center text-3xl mb-6">🔍</div>
+          <h3 className="text-xl font-heading font-black text-[#113320] mb-2 uppercase">No Results</h3>
+          <p className="text-[#94a3b8] font-bold text-sm tracking-wide">TRY ADJUSTING YOUR FILTERS</p>
         </div>
       )}
 
-      <div className="restaurant-list__cards">
+      <div className="restaurant-list__cards space-y-10">
         {restaurants.map((restaurant, index) => {
           const originalIndex = allRestaurants.indexOf(restaurant);
           return (

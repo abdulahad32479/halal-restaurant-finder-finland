@@ -31,18 +31,18 @@ fixLeafletIcons();
 function MapActions() {
   const map = useMap();
   return (
-    <div className="absolute bottom-10 right-10 z-[1000] flex flex-col gap-4 items-center">
-      {/* Zoom Pill */}
-      <div className="flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-100/50 overflow-hidden">
+    <div className="absolute bottom-12 right-12 z-[1000] flex flex-col gap-6 items-center">
+      {/* Zoom Controls */}
+      <div className="flex flex-col bg-white/80 backdrop-blur-xl rounded-[24px] shadow-2xl shadow-black/10 border border-white/50 overflow-hidden group">
         <button 
-          className="h-14 w-14 flex items-center justify-center text-[#1b452d] text-2xl active:bg-gray-100 transition-all border-b border-gray-100"
+          className="h-16 w-16 flex items-center justify-center text-[#113320] text-3xl active:bg-gray-100 transition-all border-b border-gray-100/50 hover:bg-white"
           onClick={() => map.zoomIn()}
           aria-label="Zoom in"
         >
           <LuPlus />
         </button>
         <button 
-          className="h-14 w-14 flex items-center justify-center text-[#1b452d] text-2xl active:bg-gray-100 transition-all"
+          className="h-16 w-16 flex items-center justify-center text-[#113320] text-3xl active:bg-gray-100 transition-all hover:bg-white"
           onClick={() => map.zoomOut()}
           aria-label="Zoom out"
         >
@@ -52,11 +52,11 @@ function MapActions() {
 
       {/* Locate Button */}
       <button 
-        className="h-14 w-14 bg-[#1b452d] rounded-2xl shadow-2xl flex items-center justify-center text-white text-2xl active:scale-95 transition-all shadow-[#1b452d]/30"
+        className="h-16 w-16 bg-[#113320] rounded-[24px] shadow-2xl shadow-[#113320]/30 flex items-center justify-center text-white text-3xl hover:bg-[#1b452d] hover:-translate-y-1 active:scale-95 transition-all duration-300"
         onClick={() => {
           if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
-              map.flyTo([pos.coords.latitude, pos.coords.longitude], 14);
+              map.flyTo([pos.coords.latitude, pos.coords.longitude], 14, { duration: 2 });
             });
           }
         }}
@@ -152,47 +152,54 @@ export default function MapView({
       <MapActions />
       </MapContainer>
 
-      {/* Floating Selection Card (Matched 1:1 to Image 1139) */}
+      {/* Floating Selection Card - Pixel Perfect Match */}
       {selectedRestaurant && (
-        <div className="absolute top-8 right-8 z-[1000] w-[380px] bg-white rounded-[48px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] border border-white overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="p-10 pb-8">
-            <div className="flex items-start gap-6 mb-8">
-              <div className="h-20 w-20 bg-[#1b452d] rounded-[32px] flex items-center justify-center text-white text-4xl shadow-2xl shadow-[#1b452d]/20 flex-shrink-0">
+        <div className="absolute top-12 left-12 z-[1000] w-[340px] bg-white rounded-[20px] shadow-2xl shadow-black/10 border border-white overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="px-[30px] py-[30px]">
+            <div className="flex items-start gap-4 mb-8">
+              <div className="h-14 w-14 bg-[#113320] rounded-[14px] flex items-center justify-center text-white text-2xl flex-shrink-0">
                 <LuUtensils />
               </div>
-              <div className="flex flex-col pt-2">
-                <span className="text-[12px] font-black tracking-[0.25em] text-[#94a3b8] uppercase mb-1">SELECTED RESULT</span>
-                <h3 className="text-[28px] font-black text-[#113320] leading-none tracking-tight">{selectedRestaurant.name}</h3>
+              <div className="flex flex-col pt-1">
+                <span className="text-[10px] font-black tracking-[0.2em] text-[#94a3b8] uppercase mb-2.5">SELECTED RESULT</span>
+                <h3 className="text-[26px] font-heading font-black text-[#113320] leading-[1.1] tracking-tight">{selectedRestaurant.name}</h3>
               </div>
             </div>
 
             <div className="space-y-6">
-              <div className="flex items-center gap-5 text-[17px] font-extrabold text-[#475569]">
-                <LuClock className="text-[#1b452d] text-2xl" />
+              <div className="flex items-center gap-4 text-[14px] font-bold text-[#113320]">
+                <LuClock className="text-lg" />
                 <span>Open until 22:00</span>
               </div>
-              <div className="flex items-center gap-5 text-[17px] font-extrabold text-[#475569]">
-                <LuPhone className="text-[#1b452d] text-2xl" />
-                <span>{selectedRestaurant.phone || "468897305"}</span>
+              
+              <div className="flex items-center gap-4 text-[14px] font-bold text-[#113320]">
+                <LuPhone className="text-lg" />
+                <span>{selectedRestaurant.phone || "+358 40 123 4567"}</span>
               </div>
+
+              <div className="flex items-center gap-4 text-[14px] font-bold text-[#113320]">
+                <LuNavigation className="text-lg" />
+                <span>4 min • 1.2km</span>
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-col gap-3">
               <button 
-                className="flex items-center gap-5 text-[17px] font-extrabold text-[#475569] hover:text-[#1b452d] transition-colors text-left"
+                className="w-full h-12 text-white rounded-2xl flex items-center justify-center gap-3 text-[14px] font-bold shadow-lg transition-all active:scale-95"
+                style={{ backgroundColor: '#113320' }}
+                onClick={() => onViewDetail && onViewDetail(selectedRestaurant)}
+              >
+                View Details
+              </button>
+              <button 
+                className="w-full h-12 bg-[#f0f3f1] hover:bg-white text-[#113320] border border-gray-100 rounded-2xl flex items-center justify-center gap-3 text-[14px] font-bold transition-all active:scale-95"
                 onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${selectedRestaurant.latitude},${selectedRestaurant.longitude}`, '_blank')}
               >
-                <LuNavigation className="text-[#1b452d] text-2xl" />
-                <span>4 min • 1.2km</span>
+                <LuNavigation className="text-lg" />
+                Get Directions
               </button>
             </div>
           </div>
-
-          <button 
-            className="w-full bg-[#f8faf9] py-6 flex items-center justify-center border-t border-gray-100 transition-colors"
-            onClick={() => onViewDetail && onViewDetail(selectedRestaurant)}
-          >
-            <span className="text-[#1b452d] text-base font-black flex items-center gap-1 opacity-90">
-              View Full Details ›
-            </span>
-          </button>
         </div>
       )}
     </div>

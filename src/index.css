@@ -4,46 +4,41 @@
 
 /* ─── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --green-50:  #f0f8f3;
-  --green-100: #d0ebd8;
-  --green-200: #bbf7d0;
-  --green-500: #2a6f44;
-  --green-600: #1b452d;
-  --green-700: #113320;
-  --green-800: #0a2215;
-  --green-900: #05140b;
+  --mint-bg:   #f0f7f4;
+  --forest:    #113320;
+  --forest-80: #1b452d;
+  --forest-60: #2a6f44;
+  --gray-text: #94a3b8;
+  --gray-light:#e2e8f0;
+  --gray-200:  #e2e8f0;
+  --gray-300:  #cbd5e0;
+  --gray-400:  #a0aec0;
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-blur: blur(20px);
 
-  --bg-sidebar: #f0f8f3;
-  --bg-center: #ffffff;
-  --bg-header: #f0f8f3;
-
-  --gray-50:  #f8faf9;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --bg-sidebar: var(--mint-bg);
+  --bg-center: var(--mint-bg);
+  --bg-header: #ffffff;
 
   --white: #ffffff;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 40px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.06);
+  --shadow-xl: 0 30px 60px rgba(0,0,0,0.12);
+  
   --header-height: 72px;
   --left-nav-width: 250px;
   --center-width: 440px;
-  --detail-split-width: 50%;
   
-  --radius-xs: 8px;
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
-  --radius-xl: 48px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font: 'Inter', system-ui, sans-serif;
   --font-heading: 'Outfit', sans-serif;
 }
 
@@ -88,7 +83,7 @@ a { text-decoration: none; color: inherit; }
   gap: 24px;
   height: var(--header-height);
   padding: 0 32px;
-  background: var(--bg-header);
+  background: var(--white);
   z-index: 1000;
   flex-shrink: 0;
   border-bottom: 1px solid rgba(0,0,0,0.03);
@@ -280,9 +275,31 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
 }
 
-.center-panel::-webkit-scrollbar { width: 4px; }
-.center-panel::-webkit-scrollbar-track { background: transparent; }
-.center-panel::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 2px; }
+.center-panel::-webkit-scrollbar,
+.detail-split-content::-webkit-scrollbar,
+.restaurant-list::-webkit-scrollbar { 
+  width: 10px; 
+}
+
+.center-panel::-webkit-scrollbar-track,
+.detail-split-content::-webkit-scrollbar-track,
+.restaurant-list::-webkit-scrollbar-track { 
+  background: #f8fafc; 
+}
+
+.center-panel::-webkit-scrollbar-thumb,
+.detail-split-content::-webkit-scrollbar-thumb,
+.restaurant-list::-webkit-scrollbar-thumb { 
+  background: var(--gray-300); 
+  border-radius: 5px;
+  border: 2px solid #f8fafc;
+}
+
+.center-panel::-webkit-scrollbar-thumb:hover,
+.detail-split-content::-webkit-scrollbar-thumb:hover,
+.restaurant-list::-webkit-scrollbar-thumb:hover { 
+  background: var(--gray-400); 
+}
 
 /* ─── Map Panel ───────────────────────────────────────────────── */
 .map-panel {
@@ -292,7 +309,9 @@ a { text-decoration: none; color: inherit; }
 }
 
 .leaflet-container {
-  filter: grayscale(1) contrast(1.1) brightness(0.95);
+  /* Ultra-muted dark map theme like screenshot */
+  filter: grayscale(1) invert(0.9) brightness(0.9) contrast(1.1);
+  background: #1a1a1a !important;
 }
 
 /* ─── Restaurant List ─────────────────────────────────────────── */
@@ -300,7 +319,7 @@ a { text-decoration: none; color: inherit; }
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 40px;
 }
 
 .restaurant-list__header {
@@ -818,21 +837,67 @@ a { text-decoration: none; color: inherit; }
   font-weight: 600;
 }
 
+/* ─── Skeleton Loading ────────────────────────────────────────── */
+.skeleton {
+  background-color: var(--gray-100);
+  background-image: linear-gradient(
+    90deg,
+    var(--gray-100) 0,
+    var(--gray-50) 50%,
+    var(--gray-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text { height: 1em; width: 100%; margin-bottom: 0.5em; }
+.skeleton-title { height: 1.5em; width: 60%; margin-bottom: 1em; }
+.skeleton-circle { border-radius: 50%; flex-shrink: 0; }
+.skeleton-card { height: 180px; border-radius: 24px; margin-bottom: 12px; }
+
+/* ─── Premium Utilities ───────────────────────────────────────── */
+.glass-effect {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--green-700), var(--highlight));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .btn-directions {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: var(--green-600);
+  gap: 12px;
+  background: var(--green-700);
   color: white;
-  padding: 14px;
+  padding: 18px;
   border-radius: var(--radius-md);
-  font-size: 15px;
-  font-weight: 700;
-  font-family: var(--font);
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
-  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 12px 24px -8px rgba(17, 51, 32, 0.4);
+  margin-top: 8px;
+}
+
+.btn-directions:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 32px -12px rgba(17, 51, 32, 0.5);
+  background: var(--green-600);
 }
 
 /* ─── Loading Spinner ─────────────────────────────────────────── */
