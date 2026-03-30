@@ -176,7 +176,7 @@ export default function Home() {
             </div>
 
             {isDetailView && selectedRestaurant && (
-              <div className="w-1/2 h-full border-l border-gray-100 bg-white animate-in slide-in-from-right duration-500 z-10">
+              <div className="w-full lg:w-1/2 h-full border-l border-gray-100 bg-white animate-in slide-in-from-right duration-500 z-50 lg:z-10 absolute lg:relative top-0 right-0">
                 <RestaurantDetail 
                   restaurant={selectedRestaurant} 
                   onClose={() => setIsDetailView(false)}

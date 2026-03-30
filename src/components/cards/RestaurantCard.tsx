@@ -96,26 +96,26 @@ export default function RestaurantCard({
       </div>
 
       {/* Body */}
-      <div className="px-8 py-8">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-[19px] font-heading font-black text-[#113320] tracking-tight">
+      <div className="px-5 lg:px-8 py-5 lg:py-8">
+        <div className="flex justify-between items-start lg:items-center mb-2 gap-2">
+          <h3 className="text-[17px] lg:text-[19px] font-heading font-black text-[#113320] tracking-tight line-clamp-1">
             {restaurant.name}
           </h3>
           {restaurant.rating && (
-            <div className="flex items-center gap-1.5 bg-[#e2f3e9] px-3 py-1.5 rounded-lg text-[#113320] font-black text-[12px]">
+            <div className="flex items-center gap-1.5 bg-[#e2f3e9] px-2.5 py-1 rounded-lg text-[#113320] font-black text-[11px] lg:text-[12px] flex-shrink-0">
               <LuStar className="text-[10px] fill-[#113320]" />
               <span>{restaurant.rating.toFixed(1)}</span>
             </div>
           )}
         </div>
         
-        <p className="text-[14px] font-bold text-[#94a3b8] mb-6">
+        <p className="text-[13px] lg:text-[14px] font-bold text-[#94a3b8] mb-4 lg:mb-6 leading-tight">
           {restaurant.cuisine} Specialty • 1.2km away
         </p>
 
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-2 lg:gap-2.5">
           {[restaurant.cuisine.toUpperCase(), "DINING"].map(tag => (
-            <span key={tag} className="px-4 py-2 bg-[#f0f3f1] text-[#94a3b8] text-[9.5px] font-black tracking-widest rounded-xl transition-colors hover:bg-[#113320] hover:text-white inline-block">
+            <span key={tag} className="px-3 lg:px-4 py-1.5 lg:py-2 bg-[#f0f3f1] text-[#94a3b8] text-[9px] lg:text-[9.5px] font-black tracking-widest rounded-xl transition-colors hover:bg-[#113320] hover:text-white inline-block">
               {tag}
             </span>
           ))}

@@ -36,15 +36,15 @@ export default function Header({
   }
 
   return (
-    <header className="header px-8 flex items-center justify-between border-b border-gray-100 bg-white sticky top-0 z-1000 h-18">
+    <header className="header px-4 lg:px-8 flex items-center justify-between border-b border-gray-100 bg-white sticky top-0 z-[1000] h-18">
       {/* Brand Logo */}
-      <div className="flex items-center gap-1.5 cursor-pointer select-none min-w-50">
-        <span className="text-2xl font-heading font-black tracking-tight text-[#2a6f44]">Verdant</span>
-        <span className="text-2xl font-heading font-black tracking-tight text-black">Halal</span>
+      <div className="flex items-center gap-1.5 cursor-pointer select-none min-w-fit lg:min-w-50">
+        <span className="text-xl lg:text-2xl font-heading font-black tracking-tight text-[#2a6f44]">Verdant</span>
+        <span className="text-xl lg:text-2xl font-heading font-black tracking-tight text-black">Halal</span>
       </div>
 
-      {/* Navigation Tabs */}
-      <nav className="flex-1 flex items-center justify-start gap-10 h-full ml-4">
+      {/* Navigation Tabs - Hidden on small tablets and below */}
+      <nav className="hidden xl:flex flex-1 items-center justify-start gap-10 h-full ml-4">
         {TABS.map((tab) => (
           <button
             key={tab}
@@ -62,29 +62,29 @@ export default function Header({
       </nav>
 
       {/* Search & Actions */}
-      <div className="flex items-center gap-4">
-        <div className="search-bar group h-10 w-70 bg-[#f0f3f1] border-none rounded-full px-5 flex items-center">
+      <div className="flex items-center gap-2 lg:gap-4">
+        <div className="search-bar group h-9 lg:h-10 w-32 sm:w-48 lg:w-70 bg-[#f0f3f1] border-none rounded-full px-3 lg:px-5 flex items-center transition-all">
           <input
             type="text"
-            placeholder="Search Helsinki..."
-            className="flex-1 bg-transparent border-none outline-none text-[13px] font-medium text-[#113320] placeholder:text-[#94a3b8]"
+            placeholder="Search..."
+            className="flex-1 bg-transparent border-none outline-none text-[12px] lg:text-[13px] font-medium text-[#113320] placeholder:text-[#94a3b8] min-w-0"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
-          <LuSearch className="text-[#94a3b8] text-lg group-focus-within:text-[#113320] transition-colors" />
+          <LuSearch className="text-[#94a3b8] text-md lg:text-lg group-focus-within:text-[#113320] transition-colors" />
         </div>
 
         <button 
           onClick={handleLocate}
           disabled={locating}
-          className="h-10 px-4 bg-[#4ade80] hover:bg-[#3ec471] text-[#113320] rounded-full flex items-center gap-2 text-[13px] font-black shadow-lg shadow-green-900/10 transition-all active:scale-95 disabled:opacity-70"
+          className="h-9 lg:h-10 px-3 lg:px-4 bg-[#4ade80] hover:bg-[#3ec471] text-[#113320] rounded-full flex items-center gap-1.5 lg:gap-2 text-[12px] lg:text-[13px] font-black shadow-lg shadow-green-900/10 transition-all active:scale-95 disabled:opacity-70"
           aria-label="Locate me"
         >
-          <LuNavigation className={`text-[14px] ${locating ? 'animate-pulse' : ''}`} />
-          Near Me
+          <LuNavigation className={`text-[13px] lg:text-[14px] ${locating ? 'animate-pulse' : ''}`} />
+          <span className="hidden sm:inline">Near Me</span>
         </button>
 
-        <div className="h-10 w-10 bg-white border border-gray-100 rounded-full flex items-center justify-center text-[#113320] text-xl shadow-sm cursor-pointer hover:shadow-md transition-all">
+        <div className="hidden sm:flex h-10 w-10 bg-white border border-gray-100 rounded-full items-center justify-center text-[#113320] text-xl shadow-sm cursor-pointer hover:shadow-md transition-all">
           <LuUser />
         </div>
       </div>
