@@ -21,10 +21,10 @@ export default function CuisineFilter({ cuisines, selected, onSelect }: CuisineF
         return (
           <button
             key={cuisine}
-            className={`px-4 lg:px-8 py-2 rounded-full font-heading text-[12px] lg:text-[14px] font-bold transition-all whitespace-nowrap ${
+            className={`px-4 lg:px-8 py-2 rounded-full font-heading text-[12px] lg:text-[14px] font-black transition-all whitespace-nowrap overflow-hidden ${
               isActive 
-                ? "bg-[#113320] text-white shadow-md" 
-                : "bg-white text-[#113320]/70 border border-gray-200 hover:text-[#113320] hover:border-[#113320]/20"
+                ? "bg-[#113320] text-white shadow-lg scale-[1.05]" 
+                : "bg-[#113320]/10 text-[#113320] border border-[#113320]/10 hover:bg-[#113320]/20"
             }`}
             onClick={() => onSelect(cuisine)}
           >

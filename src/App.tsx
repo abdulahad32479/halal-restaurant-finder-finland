@@ -90,9 +90,8 @@ export default function Home() {
         onLocate={handleLocate}
       />
 
-      <div className="app-body overflow-hidden flex">
-        {/* Left Nav — hidden on mobile */}
-        <div className="left-nav-wrapper h-full border-r border-gray-100 bg-[#f0f8f3]">
+      <div className="app-body flex flex-1 overflow-hidden relative">
+        <div className="left-nav-wrapper h-full border-r border-[#113320]/10 bg-[#e2ede6]">
           <LeftNav 
             onAddClick={() => setIsAddModalOpen(true)} 
             activeSection={activeSection}
@@ -100,10 +99,9 @@ export default function Home() {
           />
         </div>
 
-        <main className="flex-1 relative overflow-hidden flex">
-          {/* Center Panel (List) - Hide when isDetailView is active AND section is NOT restaurants */}
+        <main className="flex-1 relative overflow-hidden flex bg-[#e8f1ec]">
           {!isDetailView && activeSection === "restaurants" && (
-            <div className="center-panel h-full border-r border-gray-100 shadow-sm">
+            <div className="center-panel h-full border-r border-[#113320]/10 shadow-sm bg-[#f5f9f6]">
               <RestaurantList 
                 restaurants={filteredRestaurants} 
                 allRestaurants={restaurants}
@@ -120,9 +118,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Other Views Placeholder */}
           {!isDetailView && activeSection !== "restaurants" && (
-            <div className="center-panel h-full border-r border-gray-100 shadow-sm bg-white">
+            <div className="center-panel h-full border-r border-[#113320]/10 shadow-sm bg-[#f5f9f6]">
               {activeSection === "mosques" && (
                 <EmptyState 
                   title="Mosques" 
@@ -163,7 +160,6 @@ export default function Home() {
               )}
             </div>
           )}
-          {/* Split view: Map + Details */}
           <div className="flex-1 h-full relative flex">
             <div className={`${isDetailView ? 'w-1/2' : 'w-full'} h-full transition-all duration-500`}>
               <MapView 
@@ -176,7 +172,7 @@ export default function Home() {
             </div>
 
             {isDetailView && selectedRestaurant && (
-              <div className="w-full lg:w-1/2 h-full border-l border-gray-100 bg-white animate-in slide-in-from-right duration-500 z-50 lg:z-10 absolute lg:relative top-0 right-0">
+              <div className="w-full lg:w-1/2 h-full border-l border-[#113320]/10 bg-[#f5f9f6] animate-in slide-in-from-right duration-500 z-50 lg:z-10 absolute lg:relative top-0 right-0">
                 <RestaurantDetail 
                   restaurant={selectedRestaurant} 
                   onClose={() => setIsDetailView(false)}
@@ -187,9 +183,8 @@ export default function Home() {
               </div>
             )}
 
-            {/* Mobile View Toggle */}
             <button
-              className="mobile-map-toggle lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2"
+              className="mobile-map-toggle lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#113320] text-white px-6 py-3 rounded-full shadow-lg z-40"
               onClick={() => setIsMobileMapView(!isMobileMapView)}
               aria-label="Toggle map view"
             >
@@ -199,8 +194,7 @@ export default function Home() {
         </main>
       </div>
 
-      {/* Mobile bottom nav */}
-      <nav className="mobile-bottom-nav lg:hidden">
+      <nav className="mobile-bottom-nav lg:hidden bg-[#e2ede6] border-t border-[#113320]/10">
         <button
           className={`mobile-bottom-nav__item ${activeSection === "restaurants" ? "mobile-bottom-nav__item--active" : ""}`}
           onClick={() => { setActiveSection("restaurants"); setIsMobileMapView(false); }}
