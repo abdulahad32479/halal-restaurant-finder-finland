@@ -1,5 +1,3 @@
-"use client";
-
 import { getCuisineColor } from "../../utils/cuisineColors";
 
 interface CuisineFilterProps {

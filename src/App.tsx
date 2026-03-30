@@ -8,6 +8,8 @@ import RestaurantList from "./components/layout/RestaurantList";
 import RestaurantDetail from "./components/cards/RestaurantDetail";
 import MapView from "./components/map/MapView";
 import AddRestaurantModal from "./components/modals/AddRestaurantModal";
+import EmptyState from "./components/layout/EmptyState";
+import { LuHeart, LuSettings, LuBuilding } from "react-icons/lu";
 
 export default function Home() {
   const { restaurants, loading } = useRestaurants();
@@ -64,69 +66,96 @@ export default function Home() {
         onLocate={handleLocate}
       />
 
-      <div className="app-body overflow-hidden">
+      <div className="app-body overflow-hidden flex">
         {/* Left Nav — hidden on mobile */}
-        <div className="left-nav-wrapper h-full">
-          <LeftNav onAddClick={() => setIsAddModalOpen(true)} />
-        </div>
-
-        {/* Center: restaurant list or detail */}
-        <div className="center-panel">
-          {activeSection !== "restaurants" ? (
-            <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500">
-              <span className="text-4xl mb-4">✨</span>
-              <h2 className="text-xl font-bold text-gray-800 mb-2">{activeSection.charAt(0).toUpperCase() + activeSection.slice(1)} Coming Soon</h2>
-              <p>We're working hard to bring this feature to the Finnish Halal community!</p>
-              <button 
-                className="mt-6 px-6 py-2 bg-[#1b452d] text-white rounded-full font-semibold"
-                onClick={() => setActiveSection("restaurants")}
-              >
-                Back to Restaurants
-              </button>
-            </div>
-          ) : isDetailView && selectedRestaurant ? (
-            <RestaurantDetail
-              restaurant={selectedRestaurant}
-              onClose={handleCloseDetail}
-              index={getOriginalIndex(selectedRestaurant)}
-            />
-          ) : (
-            <RestaurantList
-              restaurants={filteredRestaurants}
-              allRestaurants={restaurants}
-              selectedRestaurant={selectedRestaurant}
-              onSelect={handleRestaurantSelect}
-              cuisines={cuisineTypes}
-              selectedCuisine={selectedCuisine}
-              onCuisineChange={setSelectedCuisine}
-              loading={loading}
-            />
-          )}
-        </div>
-
-        {/* Right: Map */}
-        <div className="map-panel">
-          <MapView
-            restaurants={filteredRestaurants}
-            selectedRestaurant={selectedRestaurant}
-            onRestaurantSelect={handleRestaurantSelect}
-            userLocation={userLocation}
-            onViewDetail={handleViewDetail}
+        <div className="left-nav-wrapper h-full border-r border-gray-100 bg-[#f0f8f3]">
+          <LeftNav 
+            onAddClick={() => setIsAddModalOpen(true)} 
+            activeSection={activeSection}
+            onSectionChange={setActiveSection}
           />
-
-          {/* Mobile toggle button */}
-          <button
-            className="mobile-map-toggle"
-            onClick={() => setIsMobileMapView(!isMobileMapView)}
-            aria-label="Toggle map view"
-          >
-            {isMobileMapView ? "📋 List" : "🗺 Map"}
-          </button>
         </div>
+
+        <main className="flex-1 relative overflow-hidden flex">
+          {/* Center Panel (List) - Hide when isDetailView is active AND section is NOT restaurants */}
+          {!isDetailView && activeSection === "restaurants" && (
+            <div className="center-panel h-full border-r border-gray-100 shadow-sm">
+              <RestaurantList 
+                restaurants={filteredRestaurants} 
+                allRestaurants={restaurants}
+                selectedRestaurant={selectedRestaurant}
+                onSelect={handleRestaurantSelect}
+                cuisines={cuisineTypes}
+                selectedCuisine={selectedCuisine}
+                onCuisineChange={setSelectedCuisine}
+                loading={loading}
+                onViewDetail={handleViewDetail}
+              />
+            </div>
+          )}
+
+          {/* Other Views Placeholder */}
+          {!isDetailView && activeSection !== "restaurants" && (
+            <div className="center-panel h-full border-r border-gray-100 shadow-sm bg-white">
+              {activeSection === "mosques" && (
+                <EmptyState 
+                  title="Mosques" 
+                  description="We are currently mapping Finnish mosques. This feature will be available in the next update!"
+                  icon={<LuBuilding />}
+                />
+              )}
+              {activeSection === "favorites" && (
+                <EmptyState 
+                  title="Favorites" 
+                  description="Your saved restaurants and mosques will appear here. Start exploring!"
+                  icon={<LuHeart />}
+                />
+              )}
+              {activeSection === "settings" && (
+                <EmptyState 
+                  title="Settings" 
+                  description="Customize your experience, manage preferences, and localization settings."
+                  icon={<LuSettings />}
+                />
+              )}
+            </div>
+          )}
+          {/* Split view: Map + Details */}
+          <div className="flex-1 h-full relative flex">
+            <div className={`${isDetailView ? 'w-1/2' : 'w-full'} h-full transition-all duration-500`}>
+              <MapView 
+                restaurants={filteredRestaurants} 
+                onRestaurantSelect={handleRestaurantSelect}
+                selectedRestaurant={selectedRestaurant}
+                userLocation={userLocation}
+                onViewDetail={handleViewDetail}
+              />
+            </div>
+
+            {isDetailView && selectedRestaurant && (
+              <div className="w-1/2 h-full border-l border-gray-100 bg-white animate-in slide-in-from-right duration-500 z-10">
+                <RestaurantDetail 
+                  restaurant={selectedRestaurant} 
+                  onClose={() => setIsDetailView(false)}
+                  index={getOriginalIndex(selectedRestaurant)}
+                />
+              </div>
+            )}
+
+            {/* Mobile View Toggle */}
+            <button
+              className="mobile-map-toggle lg:hidden fixed bottom-24 left-1/2 -translate-x-1/2"
+              onClick={() => setIsMobileMapView(!isMobileMapView)}
+              aria-label="Toggle map view"
+            >
+              {isMobileMapView ? "📋 List" : "🗺 Map"}
+            </button>
+          </div>
+        </main>
       </div>
 
       {/* Mobile bottom nav */}
-      <nav className="mobile-bottom-nav">
+      <nav className="mobile-bottom-nav lg:hidden">
         <button
           className={`mobile-bottom-nav__item ${activeSection === "restaurants" ? "mobile-bottom-nav__item--active" : ""}`}
           onClick={() => { setActiveSection("restaurants"); setIsMobileMapView(false); }}

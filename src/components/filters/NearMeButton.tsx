@@ -1,5 +1,3 @@
-"use client";
-
 interface NearMeButtonProps {
   onLocate: (lat: number, lng: number) => void;
   loading: boolean;
